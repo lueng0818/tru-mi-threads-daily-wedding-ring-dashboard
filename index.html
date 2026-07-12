@@ -136,7 +136,7 @@
 
     .summary-bar {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 14px;
       margin: 24px 0;
     }
@@ -164,6 +164,53 @@
       font-size: 2.3rem;
       font-weight: 900;
       line-height: 1;
+    }
+
+    .stat-note {
+      margin-top: 8px;
+      color: var(--muted);
+      font-family: "Noto Sans TC", sans-serif;
+      font-size: 0.76rem;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    .level-bar {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      margin: -10px 0 24px;
+    }
+
+    .level-pill {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      min-height: 52px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 253, 249, 0.78);
+      color: var(--green);
+      font-family: "Noto Sans TC", sans-serif;
+      font-weight: 800;
+    }
+
+    .level-pill span {
+      display: inline-grid;
+      place-items: center;
+      min-width: 30px;
+      height: 28px;
+      padding: 0 8px;
+      border-radius: 999px;
+      background: var(--green);
+      color: var(--white);
+      font-size: 0.82rem;
+    }
+
+    .level-pill.risk span {
+      background: var(--clay);
     }
 
     .strategy-room {
@@ -393,6 +440,29 @@
       cursor: pointer;
     }
 
+    .post-card::before {
+      content: attr(data-grade-label);
+      display: inline-flex;
+      min-height: 24px;
+      margin-bottom: 10px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      color: var(--white);
+      background: var(--green);
+      font-family: "Noto Sans TC", sans-serif;
+      font-size: 0.72rem;
+      font-weight: 800;
+    }
+
+    .post-card:not([data-grade-label])::before,
+    .post-card[data-grade-label=""]::before {
+      display: none;
+    }
+
+    .post-card[data-grade="風險"]::before {
+      background: var(--clay);
+    }
+
     .post-top,
     .post-stats,
     .comment-meta {
@@ -527,6 +597,7 @@
       }
 
       .summary-bar,
+      .level-bar,
       .tabs {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
@@ -543,6 +614,7 @@
       }
 
       .summary-bar,
+      .level-bar,
       .tabs {
         grid-template-columns: 1fr;
       }
@@ -583,15 +655,36 @@
       <div class="stat-pill">
         <div class="stat-label">蒐集貼文數</div>
         <span class="stat-number" data-stat="posts">0</span>
+        <div class="stat-note">全部戰略分頁累積</div>
+      </div>
+      <div class="stat-pill">
+        <div class="stat-label">近兩天貼文提醒</div>
+        <span class="stat-number" data-stat="recent-alerts">0</span>
+        <div class="stat-note">依貼文日期自動判斷</div>
       </div>
       <div class="stat-pill">
         <div class="stat-label">最高單篇讚數</div>
         <span class="stat-number" data-stat="top-likes">0</span>
+        <div class="stat-note">取最高互動卡片</div>
       </div>
       <div class="stat-pill">
         <div class="stat-label">總留言數</div>
         <span class="stat-number" data-stat="comments">0</span>
+        <div class="stat-note">各卡片留言數加總</div>
       </div>
+      <div class="stat-pill">
+        <div class="stat-label">A級高意圖</div>
+        <span class="stat-number" data-stat="grade-a">0</span>
+        <div class="stat-note">優先 24 小時追蹤</div>
+      </div>
+    </section>
+
+    <section class="level-bar" aria-label="意圖分級統計">
+      <div class="level-pill">A級 <span data-level-count="A">0</span></div>
+      <div class="level-pill">B級 <span data-level-count="B">0</span></div>
+      <div class="level-pill">C級 <span data-level-count="C">0</span></div>
+      <div class="level-pill">D級 <span data-level-count="D">0</span></div>
+      <div class="level-pill risk">風險 <span data-level-count="風險">0</span></div>
     </section>
 
     <section class="strategy-room">
@@ -731,6 +824,14 @@
   </main>
 
   <script>
+    var gradePriority = {
+      "A": 1,
+      "B": 2,
+      "C": 3,
+      "D": 4,
+      "風險": 5
+    };
+
     function switchTab(panelId, button) {
       document.querySelectorAll(".tab-panel").forEach(function(panel) {
         panel.classList.remove("active");
@@ -748,6 +849,151 @@
       }
       card.classList.toggle("expanded");
     }
+
+    function toNumber(text) {
+      var match = String(text || "").replace(/,/g, "").match(/\d+/);
+      return match ? Number(match[0]) : 0;
+    }
+
+    function getCardGrade(card) {
+      if (card.dataset.grade) {
+        return card.dataset.grade;
+      }
+
+      var text = card.textContent || "";
+      var explicit = text.match(/等級[：:]\s*(A|B|C|D|風險)/);
+      if (explicit) {
+        return explicit[1];
+      }
+
+      var loose = text.match(/(A|B|C|D)級|風險/);
+      if (loose) {
+        return loose[1] || "風險";
+      }
+
+      return "D";
+    }
+
+    function getCardDate(card) {
+      var rawDate = card.dataset.date || "";
+      var dateEl = card.querySelector(".post-date");
+      if (!rawDate && dateEl) {
+        rawDate = dateEl.textContent.trim();
+      }
+
+      var dateMatch = rawDate.match(/\d{4}-\d{2}-\d{2}/);
+      if (!dateMatch) {
+        return null;
+      }
+
+      return new Date(dateMatch[0] + "T00:00:00+08:00");
+    }
+
+    function getDashboardDate() {
+      var updatedEl = document.querySelector(".last-updated");
+      var updatedText = updatedEl ? updatedEl.textContent : "";
+      var dateMatch = updatedText.match(/\d{4}-\d{2}-\d{2}/);
+      if (dateMatch) {
+        return new Date(dateMatch[0] + "T00:00:00+08:00");
+      }
+
+      var now = new Date();
+      return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    }
+
+    function isRecentTwoDays(card, baseDate) {
+      var cardDate = getCardDate(card);
+      if (!cardDate) {
+        return false;
+      }
+
+      var oneDay = 24 * 60 * 60 * 1000;
+      var diffDays = Math.floor((baseDate - cardDate) / oneDay);
+      return diffDays >= 0 && diffDays <= 1;
+    }
+
+    function updateText(selector, value) {
+      var el = document.querySelector(selector);
+      if (el) {
+        el.textContent = value;
+      }
+    }
+
+    function refreshDashboardNumbers() {
+      var cards = Array.from(document.querySelectorAll(".post-card"));
+      var baseDate = getDashboardDate();
+      var levelCounts = { "A": 0, "B": 0, "C": 0, "D": 0, "風險": 0 };
+      var totalComments = 0;
+      var topLikes = 0;
+      var recentAlerts = 0;
+
+      cards.forEach(function(card) {
+        var grade = getCardGrade(card);
+        var gradeLabel = grade === "風險" ? "風險觀察" : grade + "級";
+        card.dataset.grade = grade;
+        card.dataset.gradeLabel = gradeLabel;
+        levelCounts[grade] = (levelCounts[grade] || 0) + 1;
+
+        if (isRecentTwoDays(card, baseDate)) {
+          recentAlerts += 1;
+        }
+
+        var likesEl = card.querySelector(".post-likes");
+        topLikes = Math.max(topLikes, toNumber(likesEl ? likesEl.textContent : ""));
+
+        var statsText = card.querySelector(".post-stats");
+        if (statsText) {
+          var commentMatch = statsText.textContent.match(/💬\s*([\d,]+)/);
+          totalComments += commentMatch ? toNumber(commentMatch[1]) : 0;
+        }
+      });
+
+      updateText('[data-stat="posts"]', cards.length);
+      updateText('[data-stat="recent-alerts"]', recentAlerts);
+      updateText('[data-stat="top-likes"]', topLikes);
+      updateText('[data-stat="comments"]', totalComments);
+      updateText('[data-stat="grade-a"]', levelCounts.A || 0);
+
+      Object.keys(levelCounts).forEach(function(level) {
+        updateText('[data-level-count="' + level + '"]', levelCounts[level] || 0);
+      });
+
+      document.querySelectorAll(".tab-button").forEach(function(button) {
+        var onclick = button.getAttribute("onclick") || "";
+        var match = onclick.match(/'(panel-[^']+)'/);
+        var countEl = button.querySelector(".count");
+        if (match && countEl) {
+          countEl.textContent = document.querySelectorAll("#" + match[1] + " .post-card").length;
+        }
+      });
+    }
+
+    function sortCardsByGrade() {
+      document.querySelectorAll(".posts-grid").forEach(function(grid) {
+        var cards = Array.from(grid.querySelectorAll(".post-card"));
+        cards.sort(function(a, b) {
+          var gradeA = gradePriority[getCardGrade(a)] || 99;
+          var gradeB = gradePriority[getCardGrade(b)] || 99;
+          var dateA = getCardDate(a);
+          var dateB = getCardDate(b);
+          var timeA = dateA ? dateA.getTime() : 0;
+          var timeB = dateB ? dateB.getTime() : 0;
+
+          if (gradeA !== gradeB) {
+            return gradeA - gradeB;
+          }
+
+          return timeB - timeA;
+        });
+
+        cards.forEach(function(card) {
+          grid.appendChild(card);
+        });
+      });
+    }
+
+    sortCardsByGrade();
+    refreshDashboardNumbers();
   </script>
 </body>
 </html>
