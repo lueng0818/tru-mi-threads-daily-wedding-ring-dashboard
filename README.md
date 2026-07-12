@@ -15,6 +15,16 @@ https://lueng0818.github.io/tru-mi-threads-daily-wedding-ring-dashboard/
 
 每日 09:00 的 Codex 自動化會在更新儀表板後提交並推送到此 repo；若 GitHub 憑證失效，會保留本機提交並回報需重新登入。
 
+## 第一次啟用 GitHub Pages
+
+在 GitHub repo 進入 `Settings` → `Pages`，設定：
+
+- Source：`Deploy from a branch`
+- Branch：`main`
+- Folder：`/root`
+
+儲存後，網站會使用根目錄的 `index.html` 呈現。
+
 ## Global Colors
 
 - Border Line：`#38761D`
