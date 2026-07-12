@@ -13,6 +13,8 @@ https://lueng0818.github.io/tru-mi-threads-daily-wedding-ring-dashboard/
 
 每日排程更新後，兩個 HTML 檔案會保持完全一致，並推送到 `main` 分支。推送完成後，GitHub Actions 會自動部署到 GitHub Pages。
 
+每日 09:00 的 Codex 自動化會在更新儀表板後提交並推送到此 repo；若 GitHub 憑證失效，會保留本機提交並回報需重新登入。
+
 ## Global Colors
 
 - Border Line：`#38761D`
