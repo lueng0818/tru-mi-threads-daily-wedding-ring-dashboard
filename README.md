@@ -15,6 +15,10 @@ https://lueng0818.github.io/tru-mi-threads-daily-wedding-ring-dashboard/
 
 每日 09:00 的 Codex 自動化會在更新儀表板後提交並推送到此 repo；若 GitHub 憑證失效，會保留本機提交並回報需重新登入。
 
+若自動推送失敗，使用手動上傳頁覆蓋 `index.html`：
+
+https://github.com/lueng0818/tru-mi-threads-daily-wedding-ring-dashboard/upload/main
+
 ## 第一次啟用 GitHub Pages
 
 在 GitHub repo 進入 `Settings` → `Pages`，設定：
