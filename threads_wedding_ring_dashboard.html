@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tru-Mi Threads 婚戒海巡儀表板</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;600;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #F7F1EA;
+      --paper-deep: #EFE2D3;
+      --ink: #1F2D2A;
+      --green: #1F4A43;
+      --green-soft: #DCE8E3;
+      --gold: #C59A52;
+      --clay: #B5533A;
+      --white: #FFFDF9;
+      --muted: #766D61;
+      --line: rgba(31, 74, 67, 0.16);
+      --shadow: 0 18px 48px rgba(58, 40, 23, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, rgba(31, 74, 67, 0.035) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(31, 74, 67, 0.03) 1px, transparent 1px),
+        var(--paper);
+      background-size: 36px 36px;
+      font-family: "Noto Serif TC", serif;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .page-shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 48px;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 24px;
+      align-items: end;
+      padding: 26px 0 20px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      margin-bottom: 12px;
+      color: var(--green);
+      font-family: "Noto Sans TC", sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .eyebrow::before {
+      content: "";
+      display: block;
+      width: 34px;
+      height: 2px;
+      background: var(--gold);
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--green);
+      font-size: clamp(2rem, 5vw, 4.2rem);
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      max-width: 760px;
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-family: "Noto Sans TC", sans-serif;
+      font-size: 1rem;
+      line-height: 1.9;
+    }
+
+    .header-meta {
+      min-width: 260px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 253, 249, 0.74);
+      box-shadow: 0 10px 30px rgba(58, 40, 23, 0.08);
+    }
+
+    .last-updated {
+      margin: 0 0 12px;
+      color: var(--green);
+      font-family: "Noto Sans TC", sans-serif;
+      font-weight: 700;
+      font-size: 0.86rem;
+    }
+
+    .watchlist {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .watchlist span,
+    .drawer-chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 4px 9px;
+      border: 1px solid rgba(197, 154, 82, 0.34);
+      border-radius: 999px;
+      color: var(--green);
+      background: rgba(197, 154, 82, 0.12);
+      font-family: "Noto Sans TC", sans-serif;
+      font-size: 0.76rem;
+      white-space: nowrap;
+    }
+
+    .summary-bar {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin: 24px 0;
+    }
+
+    .stat-pill {
+      min-height: 112px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--white);
+      box-shadow: 0 12px 28px rgba(58, 40, 23, 0.08);
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-family: "Noto Sans TC", sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .stat-number {
+      display: block;
+      margin-top: 10px;
+      color: var(--green);
+      font-size: 2.3rem;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .strategy-room {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+      gap: 18px;
+      margin: 24px 0;
+    }
+
+    .panel-strategy,
+    .drawer-map {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 253, 249, 0.84);
+      box-shadow: var(--shadow);
+    }
+
+    .panel-strategy {
+      padding: 20px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin: 0 0 16px;
+      color: var(--green);
+      font-size: 1.24rem;
+      line-height: 1.35;
+    }
+
+    .draft-card {
+      padding: 18px;
+      border-left: 4px solid var(--gold);
+      border-radius: 8px;
+      background: linear-gradient(180deg, rgba(247, 241, 234, 0.72), rgba(255, 253, 249, 0.9));
+    }
+
+    .draft-meta {
+      margin-bottom: 10px;
+      color: var(--clay);
+      font-family: "Noto Sans TC", sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .draft-body {
+      color: var(--ink);
+      font-size: 1.02rem;
+      line-height: 1.95;
+    }
+
+    .drawer-map {
+      padding: 18px;
+    }
+
+    .drawer-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .drawer-row {
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+      padding: 12px;
+      border: 1px solid rgba(31, 74, 67, 0.12);
+      border-radius: 8px;
+      background: rgba(247, 241, 234, 0.58);
+    }
+
+    .drawer-icon {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: var(--green);
+      color: var(--white);
+      font-family: "Noto Sans TC", sans-serif;
+      font-size: 0.9rem;
+    }
+
+    .drawer-name {
+      margin: 0 0 4px;
+      color: var(--green);
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .drawer-desc {
+      margin: 0;
+      color: var(--muted);
+      font-family: "Noto Sans TC", sans-serif;
+      font-size: 0.78rem;
+      line-height: 1.55;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      margin: 26px 0 18px;
+    }
+
+    .tab-button {
+      min-height: 64px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--green);
+      background: rgba(255, 253, 249, 0.72);
+      font-family: "Noto Sans TC", sans-serif;
+      font-weight: 700;
+      text-align: left;
+      cursor: pointer;
+      transition: transform 160ms ease, background 160ms ease, color 160ms ease;
+    }
+
+    .tab-button:hover,
+    .tab-button.active {
+      transform: translateY(-1px);
+      color: var(--white);
+      background: var(--green);
+    }
+
+    .tab-button .count {
+      display: inline-grid;
+      place-items: center;
+      min-width: 26px;
+      height: 24px;
+      margin-left: 6px;
+      padding: 0 7px;
+      border-radius: 999px;
+      background: var(--gold);
+      color: var(--white);
+      font-size: 0.78rem;
+    }
+
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    .panel-heading {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: end;
+      margin-bottom: 16px;
+    }
+
+    .panel-heading h2 {
+      margin: 0;
+      color: var(--green);
+      font-size: 1.5rem;
+    }
+
+    .panel-heading p {
+      max-width: 640px;
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-family: "Noto Sans TC", sans-serif;
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+
+    .posts-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      min-height: 180px;
+    }
+
+    .empty-state {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 16px;
+      align-items: center;
+      min-height: 176px;
+      padding: 22px;
+      border: 1px dashed rgba(31, 74, 67, 0.26);
+      border-radius: 8px;
+      background: rgba(255, 253, 249, 0.58);
+    }
+
+    .empty-mark {
+      display: grid;
+      place-items: center;
+      width: 58px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      color: var(--green);
+      background: var(--green-soft);
+      font-family: "Noto Sans TC", sans-serif;
+      font-size: 1.45rem;
+      font-weight: 700;
+    }
+
+    .empty-state h3 {
+      margin: 0 0 6px;
+      color: var(--green);
+      font-size: 1.05rem;
+    }
+
+    .empty-state p {
+      margin: 0;
+      color: var(--muted);
+      font-family: "Noto Sans TC", sans-serif;
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+
+    .post-card {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--white);
+      box-shadow: 0 12px 34px rgba(58, 40, 23, 0.1);
+      cursor: pointer;
+    }
+
+    .post-top,
+    .post-stats,
+    .comment-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .post-author {
+      color: var(--green);
+      font-family: "Noto Sans TC", sans-serif;
+      font-size: 0.92rem;
+      font-weight: 700;
+    }
+
+    .post-date,
+    .post-likes,
+    .post-stats,
+    .expand-hint,
+    .comment-meta {
+      color: var(--muted);
+      font-family: "Noto Sans TC", sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .post-likes {
+      color: var(--clay);
+      white-space: nowrap;
+    }
+
+    .post-content {
+      margin: 14px 0;
+      color: var(--ink);
+      font-size: 0.96rem;
+      line-height: 1.85;
+    }
+
+    .expand-hint {
+      margin-top: 10px;
+      color: var(--green);
+    }
+
+    .comments-section {
+      display: none;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+    }
+
+    .post-card.expanded .comments-section {
+      display: block;
+    }
+
+    .comments-title,
+    .jessica-drawer {
+      color: var(--green);
+      font-family: "Noto Sans TC", sans-serif;
+      font-size: 0.84rem;
+      font-weight: 800;
+    }
+
+    .comment {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: rgba(247, 241, 234, 0.78);
+    }
+
+    .comment-text,
+    .jessica-text {
+      margin-top: 6px;
+      color: var(--ink);
+      font-family: "Noto Sans TC", sans-serif;
+      font-size: 0.84rem;
+      line-height: 1.75;
+    }
+
+    .post-link {
+      display: inline-flex;
+      margin-top: 12px;
+      color: var(--green);
+      font-family: "Noto Sans TC", sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .jessica-insight {
+      margin-top: 14px;
+      padding: 14px;
+      border: 1px solid rgba(197, 154, 82, 0.28);
+      border-radius: 8px;
+      background: rgba(255, 253, 249, 0.86);
+    }
+
+    .format-preview {
+      margin-top: 28px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--white);
+      box-shadow: 0 12px 30px rgba(58, 40, 23, 0.08);
+    }
+
+    .preview-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .preview-item {
+      padding: 12px;
+      border-radius: 8px;
+      background: rgba(220, 232, 227, 0.52);
+      font-family: "Noto Sans TC", sans-serif;
+      font-size: 0.84rem;
+      line-height: 1.65;
+    }
+
+    .preview-item strong {
+      color: var(--green);
+    }
+
+    @media (max-width: 860px) {
+      header,
+      .strategy-room,
+      .posts-grid,
+      .preview-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .summary-bar,
+      .tabs {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .header-meta {
+        min-width: 0;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .page-shell {
+        width: min(100% - 22px, 1180px);
+        padding-top: 16px;
+      }
+
+      .summary-bar,
+      .tabs {
+        grid-template-columns: 1fr;
+      }
+
+      .empty-state {
+        grid-template-columns: 1fr;
+      }
+
+      .panel-heading {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page-shell">
+    <header>
+      <div>
+        <div class="eyebrow">Tru-Mi 找金工 · Threads 婚戒海巡</div>
+        <h1>婚戒輿情<br>戰略儀表板</h1>
+        <p class="subtitle">每日整理 Threads 上的婚戒痛點，分流到四個戰略抽屜，並用海巡八段式判讀轉成可回應、可發文、可更新漏斗的社群情報。</p>
+      </div>
+      <aside class="header-meta" aria-label="更新資訊">
+        <p class="last-updated">最後更新：2026-07-12 09:00</p>
+        <div class="drawer-chip">狀態：初始化版本</div>
+        <div class="watchlist" aria-label="追蹤關鍵字">
+          <span>婚戒</span>
+          <span>結婚戒指</span>
+          <span>對戒</span>
+          <span>婚戒預算</span>
+          <span>舊戒重製</span>
+          <span>婚戒硌手</span>
+        </div>
+      </aside>
+    </header>
+
+    <section class="summary-bar" aria-label="統計摘要">
+      <div class="stat-pill">
+        <div class="stat-label">蒐集貼文數</div>
+        <span class="stat-number" data-stat="posts">0</span>
+      </div>
+      <div class="stat-pill">
+        <div class="stat-label">最高單篇讚數</div>
+        <span class="stat-number" data-stat="top-likes">0</span>
+      </div>
+      <div class="stat-pill">
+        <div class="stat-label">總留言數</div>
+        <span class="stat-number" data-stat="comments">0</span>
+      </div>
+    </section>
+
+    <section class="strategy-room">
+      <section class="panel-strategy" id="panel-strategy" aria-labelledby="draft-title">
+        <h2 class="section-title" id="draft-title">✍️ 今日 Jessica 發文草稿</h2>
+        <div class="draft-card">
+          <div class="draft-meta">📅 2026年07月12日 今日草稿 · 靈感來源：尚未收錄</div>
+          <div class="draft-body">儀表板已建立。今日尚未有新貼文資料，待每日海巡任務收錄後，這裡會自動放入互動最高且適合延伸的 Threads 草稿。</div>
+        </div>
+      </section>
+
+      <aside class="drawer-map" aria-labelledby="drawer-title">
+        <h2 class="section-title" id="drawer-title">四大戰略抽屜分類</h2>
+        <div class="drawer-list">
+          <div class="drawer-row">
+            <div class="drawer-icon">1</div>
+            <div>
+              <p class="drawer-name">溝通與翻車焦慮</p>
+              <p class="drawer-desc">服務冷暴力、設計不聽、實品落差、避雷爆料。</p>
+            </div>
+          </div>
+          <div class="drawer-row">
+            <div class="drawer-icon">2</div>
+            <div>
+              <p class="drawer-name">日常佩戴與體感</p>
+              <p class="drawer-desc">硌手、打字卡手、戒圍變化、職業限制、遺失。</p>
+            </div>
+          </div>
+          <div class="drawer-row">
+            <div class="drawer-icon">3</div>
+            <div>
+              <p class="drawer-name">預算與審美拉扯</p>
+              <p class="drawer-desc">預算焦慮、伴侶審美衝突、長輩介入、材質選擇。</p>
+            </div>
+          </div>
+          <div class="drawer-row">
+            <div class="drawer-icon">4</div>
+            <div>
+              <p class="drawer-name">傳承與情感重塑</p>
+              <p class="drawer-desc">舊戒重製、長輩遺物、刻字、跨世代情感故事。</p>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <nav class="tabs" aria-label="戰略分頁">
+      <button class="tab-button active" type="button" onclick="switchTab('panel-comms', this)">🚨 溝通與翻車 <span class="count">0</span></button>
+      <button class="tab-button" type="button" onclick="switchTab('panel-daily', this)">🌿 日常佩戴 <span class="count">0</span></button>
+      <button class="tab-button" type="button" onclick="switchTab('panel-budget', this)">💸 預算審美 <span class="count">0</span></button>
+      <button class="tab-button" type="button" onclick="switchTab('panel-heritage', this)">💛 傳承情感 <span class="count">0</span></button>
+    </nav>
+
+    <section class="tab-panel active" id="panel-comms">
+      <div class="panel-heading">
+        <div>
+          <h2>🚨 溝通與翻車焦慮</h2>
+          <p>收納服務落差、客製溝通失敗、實品與想像不同、避雷與點名風險等貼文。</p>
+        </div>
+      </div>
+      <div class="posts-grid">
+        <div class="empty-state">
+          <div class="empty-mark">0</div>
+          <div>
+            <h3>等待今日新增貼文</h3>
+            <p>每日任務會把符合條件的新貼文插入這裡，並保留既有歷史卡片。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="panel-daily">
+      <div class="panel-heading">
+        <div>
+          <h2>🌿 日常佩戴與體感</h2>
+          <p>收納硌手、勾衣服、戒圍變化、打字卡手、職業限制與日常不戴等討論。</p>
+        </div>
+      </div>
+      <div class="posts-grid">
+        <div class="empty-state">
+          <div class="empty-mark">0</div>
+          <div>
+            <h3>等待今日新增貼文</h3>
+            <p>之後會優先沉澱能對應內弧圓角、1.8mm 厚度底線與試戴體感的討論。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="panel-budget">
+      <div class="panel-heading">
+        <div>
+          <h2>💸 預算與審美拉扯</h2>
+          <p>收納預算上限、伴侶審美差異、長輩介入、品牌迷思與材質選擇。</p>
+        </div>
+      </div>
+      <div class="posts-grid">
+        <div class="empty-state">
+          <div class="empty-mark">0</div>
+          <div>
+            <h3>等待今日新增貼文</h3>
+            <p>當貼文帶有價格、時程、品項或求推薦訊號，會進一步標記 A/B/C/D 或風險。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="panel-heritage">
+      <div class="panel-heading">
+        <div>
+          <h2>💛 傳承與情感重塑</h2>
+          <p>收納舊金改造、媽媽戒指、外婆嫁妝、沒有婚戒的遺憾與刻字故事。</p>
+        </div>
+      </div>
+      <div class="posts-grid">
+        <div class="empty-state">
+          <div class="empty-mark">0</div>
+          <div>
+            <h3>等待今日新增貼文</h3>
+            <p>這類貼文適合發展成設計師第一人稱故事，也適合回補 LINE 與官網 FAQ。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="format-preview" aria-labelledby="preview-title">
+      <h2 class="section-title" id="preview-title">海巡八段式輸出格式</h2>
+      <div class="preview-grid">
+        <div class="preview-item"><strong>二、消費者訊號</strong><br>表層問題、深層焦慮、預算與時程訊號。</div>
+        <div class="preview-item"><strong>三、判讀</strong><br>八類訂製詢問與 A/B/C/D/風險分級。</div>
+        <div class="preview-item"><strong>四、非推銷式留言草稿</strong><br>先回答問題，不放連結、不自薦、不批評同業。</div>
+        <div class="preview-item"><strong>五、Threads 延伸貼文草稿</strong><br>設計師第一人稱 100-200 字，結尾帶 IG。</div>
+        <div class="preview-item"><strong>六、跨平台延伸建議</strong><br>IG、Reels、限動、LINE／官網的後續內容。</div>
+        <div class="preview-item"><strong>七、八、漏斗與追蹤</strong><br>更新 FAQ、工期、商品頁，並標註追蹤動作。</div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    function switchTab(panelId, button) {
+      document.querySelectorAll(".tab-panel").forEach(function(panel) {
+        panel.classList.remove("active");
+      });
+      document.querySelectorAll(".tab-button").forEach(function(tab) {
+        tab.classList.remove("active");
+      });
+      document.getElementById(panelId).classList.add("active");
+      button.classList.add("active");
+    }
+
+    function toggleCard(card, event) {
+      if (event && event.target.closest("a")) {
+        return;
+      }
+      card.classList.toggle("expanded");
+    }
+  </script>
+</body>
+</html>
