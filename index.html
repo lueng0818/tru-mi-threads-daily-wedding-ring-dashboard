@@ -215,6 +215,219 @@
       background: var(--clay);
     }
 
+    button.level-pill {
+      width: 100%;
+      appearance: none;
+      text-align: left;
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    button.level-pill:hover {
+      transform: translateY(-2px);
+      border-color: var(--gold);
+      box-shadow: 0 8px 20px rgba(39, 78, 19, 0.1);
+    }
+
+    button.level-pill.active {
+      border-color: var(--gold);
+      background: linear-gradient(135deg, rgba(226, 179, 87, 0.2), rgba(253, 253, 252, 0.96));
+      box-shadow: 0 10px 24px rgba(226, 179, 87, 0.18);
+    }
+
+    button.level-pill:focus-visible {
+      outline: 3px solid rgba(226, 179, 87, 0.45);
+      outline-offset: 2px;
+    }
+
+    .grade-query-panel {
+      margin: -10px 0 24px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--white);
+      box-shadow: 0 14px 34px rgba(39, 78, 19, 0.09);
+    }
+
+    .grade-query-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 16px;
+    }
+
+    .grade-query-eyebrow {
+      margin-bottom: 5px;
+      color: var(--gold);
+      font-family: "Noto Sans TC", sans-serif;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+    }
+
+    .grade-query-title {
+      margin: 0;
+      color: var(--green);
+      font-size: 1.16rem;
+    }
+
+    .grade-query-meta,
+    .grade-query-asof {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-family: "Noto Sans TC", sans-serif;
+      font-size: 0.76rem;
+      line-height: 1.6;
+    }
+
+    .grade-query-asof {
+      flex: 0 0 auto;
+      margin: 0;
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    .grade-query-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .grade-query-card {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(249, 248, 243, 0.7);
+    }
+
+    .grade-query-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .grade-query-author {
+      color: var(--green);
+      font-family: "Noto Sans TC", sans-serif;
+      font-size: 0.84rem;
+      font-weight: 800;
+    }
+
+    .grade-query-date {
+      margin-top: 2px;
+      color: var(--muted);
+      font-family: "Noto Sans TC", sans-serif;
+      font-size: 0.72rem;
+    }
+
+    .grade-query-tags {
+      display: flex;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .grade-query-tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: var(--green-soft);
+      color: var(--green);
+      font-family: "Noto Sans TC", sans-serif;
+      font-size: 0.66rem;
+      font-weight: 700;
+    }
+
+    .grade-query-tag.recent {
+      background: rgba(226, 179, 87, 0.22);
+      color: var(--ink);
+    }
+
+    .grade-query-summary {
+      margin-bottom: 10px;
+      color: var(--ink);
+      font-family: "Noto Sans TC", sans-serif;
+      font-size: 0.82rem;
+      line-height: 1.75;
+    }
+
+    .grade-query-diagnosis {
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-family: "Noto Sans TC", sans-serif;
+      font-size: 0.75rem;
+      line-height: 1.65;
+    }
+
+    .grade-query-reply {
+      padding: 12px;
+      border-left: 3px solid var(--gold);
+      border-radius: 8px;
+      background: rgba(47, 118, 82, 0.07);
+    }
+
+    .grade-query-reply-label {
+      margin-bottom: 7px;
+      color: var(--gold);
+      font-family: "Noto Sans TC", sans-serif;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+    }
+
+    .grade-query-reply-text {
+      color: var(--ink);
+      font-family: "Noto Sans TC", sans-serif;
+      font-size: 0.79rem;
+      line-height: 1.72;
+      white-space: pre-wrap;
+    }
+
+    .grade-query-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 11px;
+    }
+
+    .grade-query-button {
+      appearance: none;
+      padding: 7px 11px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--white);
+      color: var(--green);
+      font-family: "Noto Sans TC", sans-serif;
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .grade-query-button:hover {
+      border-color: var(--gold);
+    }
+
+    .grade-query-button:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
+
+    .grade-query-empty {
+      grid-column: 1 / -1;
+      padding: 26px;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      color: var(--muted);
+      font-family: "Noto Sans TC", sans-serif;
+      text-align: center;
+    }
+
     .strategy-room {
       display: grid;
       grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
@@ -604,6 +817,10 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
+      .grade-query-grid {
+        grid-template-columns: 1fr;
+      }
+
       .header-meta {
         min-width: 0;
       }
@@ -627,6 +844,14 @@
 
       .panel-heading {
         display: block;
+      }
+
+      .grade-query-head {
+        display: block;
+      }
+
+      .grade-query-asof {
+        margin-top: 8px;
       }
     }
   </style>
@@ -682,11 +907,23 @@
     </section>
 
     <section class="level-bar" aria-label="意圖分級統計">
-      <div class="level-pill">A級 <span data-level-count="A">17</span></div>
-      <div class="level-pill">B級 <span data-level-count="B">9</span></div>
-      <div class="level-pill">C級 <span data-level-count="C">19</span></div>
-      <div class="level-pill">D級 <span data-level-count="D">5</span></div>
+      <button class="level-pill active" type="button" data-grade-query="A" aria-pressed="true" aria-controls="gradeQueryPanel">A級 <span data-level-count="A">17</span></button>
+      <button class="level-pill" type="button" data-grade-query="B" aria-pressed="false" aria-controls="gradeQueryPanel">B級 <span data-level-count="B">9</span></button>
+      <button class="level-pill" type="button" data-grade-query="C" aria-pressed="false" aria-controls="gradeQueryPanel">C級 <span data-level-count="C">19</span></button>
+      <button class="level-pill" type="button" data-grade-query="D" aria-pressed="false" aria-controls="gradeQueryPanel">D級 <span data-level-count="D">5</span></button>
       <div class="level-pill risk">風險 <span data-level-count="風險">6</span></div>
+    </section>
+
+    <section class="grade-query-panel" id="gradeQueryPanel" aria-labelledby="gradeQueryTitle" aria-live="polite">
+      <div class="grade-query-head">
+        <div>
+          <div class="grade-query-eyebrow">即時貼文查詢</div>
+          <h2 class="grade-query-title" id="gradeQueryTitle">A級 即時貼文狀態</h2>
+          <p class="grade-query-meta" id="gradeQueryMeta">依日期新到舊顯示最新貼文與可用回覆。</p>
+        </div>
+        <p class="grade-query-asof" id="gradeQueryAsOf">資料截至 2026-07-13 09:18</p>
+      </div>
+      <div class="grade-query-grid" id="gradeQueryGrid"></div>
     </section>
 
     <section class="strategy-room">
@@ -1796,6 +2033,15 @@
       "風險": 5
     };
 
+    var gradeQueryConfig = {
+      "A": { label: "A級", subtitle: "高意圖", desc: "有明確需求、時程或預算，優先查看與追蹤。" },
+      "B": { label: "B級", subtitle: "問題意圖", desc: "有具體困擾，適合用知識回覆建立信任。" },
+      "C": { label: "C級", subtitle: "情緒共鳴", desc: "故事與佩戴感受，適合發展內容題材。" },
+      "D": { label: "D級", subtitle: "低對頻", desc: "只記錄市場訊號，不優先投入互動成本。" }
+    };
+
+    var gradeQueryData = [];
+
     function switchTab(panelId, button) {
       document.querySelectorAll(".tab-panel").forEach(function(panel) {
         panel.classList.remove("active");
@@ -1883,6 +2129,197 @@
       }
     }
 
+    function escapeHtml(value) {
+      return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function getInsightSection(card, marker) {
+      var insight = card.querySelector(".jessica-insight");
+      if (!insight) {
+        return "";
+      }
+
+      var capture = false;
+      var parts = [];
+      Array.from(insight.children).forEach(function(node) {
+        if (node.classList.contains("jessica-drawer")) {
+          capture = node.textContent.indexOf(marker) !== -1;
+          return;
+        }
+        if (capture && node.classList.contains("jessica-text")) {
+          parts.push(node.textContent.trim());
+        }
+      });
+      return parts.join("\n").trim();
+    }
+
+    function getPanelLabel(panelId) {
+      var labels = {
+        "panel-comms": "溝通與翻車",
+        "panel-daily": "日常佩戴",
+        "panel-budget": "預算與審美",
+        "panel-heritage": "傳承與情感"
+      };
+      return labels[panelId] || "未分類";
+    }
+
+    function getLiveStatus(cardDate, baseDate) {
+      if (!cardDate || !baseDate) {
+        return { label: "日期待確認", recent: false };
+      }
+      var diffDays = Math.floor((baseDate - cardDate) / (24 * 60 * 60 * 1000));
+      if (diffDays === 0) {
+        return { label: "今日", recent: true };
+      }
+      if (diffDays === 1) {
+        return { label: "近兩天", recent: true };
+      }
+      return { label: "歷史追蹤", recent: false };
+    }
+
+    function buildGradeQueryData() {
+      var baseDate = getDashboardDate();
+      return Array.from(document.querySelectorAll(".post-card")).map(function(card) {
+        var grade = getCardGrade(card);
+        if (!gradeQueryConfig[grade]) {
+          return null;
+        }
+        var panel = card.closest(".tab-panel");
+        var panelId = panel ? panel.id : "";
+        var cardDate = getCardDate(card);
+        var linkEl = card.querySelector(".post-link");
+        var link = linkEl ? linkEl.getAttribute("href") : "";
+        if (!/^https:\/\/www\.threads\.(com|net)\//.test(link || "")) {
+          link = "";
+        }
+        return {
+          card: card,
+          grade: grade,
+          author: (card.querySelector(".post-author") || {}).textContent || "未知帳號",
+          dateText: (card.querySelector(".post-date") || {}).textContent || "日期待確認",
+          dateValue: cardDate ? cardDate.getTime() : 0,
+          drawer: getPanelLabel(panelId),
+          panelId: panelId,
+          summary: (card.querySelector(".post-content") || {}).textContent || "",
+          diagnosis: getInsightSection(card, "三、判讀"),
+          reply: grade === "D" ? "（D級僅記錄市場訊號，不建議主動留言。）" : getInsightSection(card, "四、非推銷式留言草稿"),
+          link: link,
+          status: getLiveStatus(cardDate, baseDate)
+        };
+      }).filter(Boolean);
+    }
+
+    function copyGradeReply(button, text) {
+      if (!text || !navigator.clipboard) {
+        return;
+      }
+      navigator.clipboard.writeText(text).then(function() {
+        var original = button.textContent;
+        button.textContent = "已複製";
+        window.setTimeout(function() {
+          button.textContent = original;
+        }, 1600);
+      });
+    }
+
+    function openGradeOriginalCard(item) {
+      var tab = Array.from(document.querySelectorAll(".tab-button")).find(function(button) {
+        return (button.getAttribute("onclick") || "").indexOf(item.panelId) !== -1;
+      });
+      if (tab) {
+        switchTab(item.panelId, tab);
+      }
+      item.card.classList.add("expanded");
+      item.card.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function renderGradeQuery(activeGrade) {
+      var config = gradeQueryConfig[activeGrade];
+      var grid = document.getElementById("gradeQueryGrid");
+      var title = document.getElementById("gradeQueryTitle");
+      var meta = document.getElementById("gradeQueryMeta");
+      if (!config || !grid || !title || !meta) {
+        return;
+      }
+
+      document.querySelectorAll("[data-grade-query]").forEach(function(button) {
+        var isActive = button.dataset.gradeQuery === activeGrade;
+        button.classList.toggle("active", isActive);
+        button.setAttribute("aria-pressed", isActive ? "true" : "false");
+      });
+
+      var current = gradeQueryData.filter(function(item) {
+        return item.grade === activeGrade;
+      }).sort(function(a, b) {
+        return b.dateValue - a.dateValue;
+      });
+      var latest = current.slice(0, 6);
+      title.textContent = config.label + " 即時貼文狀態";
+      meta.textContent = config.subtitle + "｜共 " + current.length + " 則，依日期新到舊顯示最新 " + latest.length + " 則。";
+      grid.innerHTML = "";
+
+      if (!latest.length) {
+        grid.innerHTML = '<div class="grade-query-empty">這個級別目前沒有可查詢貼文。</div>';
+        return;
+      }
+
+      latest.forEach(function(item) {
+        var card = document.createElement("article");
+        card.className = "grade-query-card";
+        var replyAvailable = activeGrade !== "D" && Boolean(item.reply);
+        var liveLink = item.link
+          ? '<a class="grade-query-button" href="' + escapeHtml(item.link) + '" target="_blank" rel="noopener noreferrer">查看 Threads 即時狀態</a>'
+          : '<button class="grade-query-button" type="button" disabled>原文連結待確認</button>';
+        card.innerHTML =
+          '<div class="grade-query-card-top">' +
+            '<div><div class="grade-query-author">' + escapeHtml(item.author.trim()) + '</div><div class="grade-query-date">' + escapeHtml(item.dateText.trim()) + '</div></div>' +
+            '<div class="grade-query-tags"><span class="grade-query-tag">' + escapeHtml(item.drawer) + '</span><span class="grade-query-tag' + (item.status.recent ? ' recent' : '') + '">' + escapeHtml(item.status.label) + '</span></div>' +
+          '</div>' +
+          '<div class="grade-query-summary">' + escapeHtml(item.summary.trim()) + '</div>' +
+          '<div class="grade-query-diagnosis">' + escapeHtml(item.diagnosis || "尚未填入判讀。") + '</div>' +
+          '<div class="grade-query-reply"><div class="grade-query-reply-label">' + (activeGrade === "D" ? "追蹤原則" : "即時回覆草稿") + '</div><div class="grade-query-reply-text">' + escapeHtml(item.reply || "目前沒有可用回覆草稿。") + '</div>' +
+            '<div class="grade-query-actions">' +
+              '<button class="grade-query-button js-copy-grade-reply" type="button"' + (replyAvailable ? '' : ' disabled') + '>' + (replyAvailable ? '複製回覆' : '僅記錄') + '</button>' +
+              '<button class="grade-query-button js-open-grade-card" type="button">展開原卡</button>' +
+              liveLink +
+            '</div>' +
+          '</div>';
+        var copyButton = card.querySelector(".js-copy-grade-reply");
+        var openButton = card.querySelector(".js-open-grade-card");
+        if (copyButton && replyAvailable) {
+          copyButton.addEventListener("click", function() {
+            copyGradeReply(copyButton, item.reply);
+          });
+        }
+        if (openButton) {
+          openButton.addEventListener("click", function() {
+            openGradeOriginalCard(item);
+          });
+        }
+        grid.appendChild(card);
+      });
+    }
+
+    function initializeGradeQuery() {
+      gradeQueryData = buildGradeQueryData();
+      document.querySelectorAll("[data-grade-query]").forEach(function(button) {
+        button.addEventListener("click", function() {
+          renderGradeQuery(button.dataset.gradeQuery);
+        });
+      });
+      var updated = document.querySelector(".last-updated");
+      var asOf = document.getElementById("gradeQueryAsOf");
+      if (updated && asOf) {
+        asOf.textContent = updated.textContent.replace("最後更新：", "資料截至 ");
+      }
+      renderGradeQuery("A");
+    }
+
     function refreshDashboardNumbers() {
       var cards = Array.from(document.querySelectorAll(".post-card"));
       var baseDate = getDashboardDate();
@@ -1914,8 +2351,8 @@
 
       updateText('[data-stat="posts"]', cards.length);
       updateText('[data-stat="recent-alerts"]', recentAlerts);
-      updateText('[data-stat="top-likes"]', topLikes);
-      updateText('[data-stat="comments"]', totalComments);
+      updateText('[data-stat="top-likes"]', topLikes.toLocaleString("en-US"));
+      updateText('[data-stat="comments"]', totalComments.toLocaleString("en-US"));
       updateText('[data-stat="grade-a"]', levelCounts.A || 0);
 
       Object.keys(levelCounts).forEach(function(level) {
@@ -1958,6 +2395,7 @@
 
     sortCardsByGrade();
     refreshDashboardNumbers();
+    initializeGradeQuery();
   </script>
 </body>
 </html>
